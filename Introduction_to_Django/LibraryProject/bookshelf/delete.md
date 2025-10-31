@@ -1,3 +1,5 @@
 #to get and delete
-Book.objects.all().delete()
+from bookshelf.models import Book
+book = Book.objects.all()
+book.delete()
 books = Book.objects.all()
