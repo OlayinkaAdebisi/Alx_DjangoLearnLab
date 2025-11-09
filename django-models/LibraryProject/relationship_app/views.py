@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Book
 from .models import Library
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 # Create your views here.
 """Create a function-based view in relationship_app/views.py that lists all books stored in the database.
 This view should render a simple text list of book titles and their authors."""
