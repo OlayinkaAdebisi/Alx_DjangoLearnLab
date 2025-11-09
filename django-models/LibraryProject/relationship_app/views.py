@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth import login
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.decorators import login_required,user_passes_test,permission_required 
 from django.http import HttpResponseForbidden
 
 
@@ -28,7 +28,7 @@ class register(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
-    
+
 def is_admin(user):
     if user.profile.role == 'Admin':
         return user.profile.role == 'Admin'
@@ -52,3 +52,8 @@ def is_librarian(user):
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
+
+
+@permission_required('relationship_app.can_add_book',raise_exception=True)
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
