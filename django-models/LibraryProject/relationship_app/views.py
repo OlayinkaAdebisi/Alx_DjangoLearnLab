@@ -11,5 +11,5 @@ def funct_view(request):
     return render(request,'relationship_app/list_books.html',context)
 class class_view(ListView):
     model=Library
-    template_name = 'library_detail.html'
-    context_object_name = 'relationship_app/Library.books'
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'Library.books'
