@@ -26,5 +26,5 @@ urlpatterns = [
     path('class_view/',views.class_view.as_view(),name ='class_view'),
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
-    path("signup/", SignUpView.as_view(), name="register"),
+    path("signup/", views.register.as_view(), name="register"),
 ]
