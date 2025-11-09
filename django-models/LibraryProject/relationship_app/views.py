@@ -3,6 +3,11 @@ from .models import Book
 from .models import Library
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+
 # Create your views here.
 """Create a function-based view in relationship_app/views.py that lists all books stored in the database.
 This view should render a simple text list of book titles and their authors."""
@@ -14,3 +19,7 @@ class class_view(ListView):
     model=Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'Library.books'
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'relationship_app/register.html'
