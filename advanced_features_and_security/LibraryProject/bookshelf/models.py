@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager,BaseUserManager
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
     published_year = models.IntegerField()
 #custom manager here
-class CustomUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, username, profile_photo= None, date_of_birth=None, password=None):
         if not username:
             raise ValueError("User must have an username")
@@ -21,7 +21,7 @@ class CustomUserManager(UserManager):
     def create_superuser(self, username, profile_photo=None, date_of_birth=None, password=None):
         
         user = self.create_user(
-            username,
+            username=username,
             password=password,
             date_of_birth=date_of_birth,
             profile_photo=profile_photo,
