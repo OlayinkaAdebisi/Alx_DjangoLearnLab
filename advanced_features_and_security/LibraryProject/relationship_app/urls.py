@@ -20,7 +20,6 @@ from .views import register
 from django.contrib.auth.views import LoginView, LogoutView
 from . import views
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('book_list/',views.funct_view, name='book_list'),
     path('class_view/',views.class_view.as_view(),name ='class_view'),
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
