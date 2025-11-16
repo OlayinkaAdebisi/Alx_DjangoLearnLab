@@ -9,3 +9,30 @@ Inside views, you can use @permission_required("appname.can_view") to prevent un
 Sometimes restart the surver after adding new groups, Django can act weird.  
 The permisions just control who can do what, its pretty simple.  
 That’s basically it, follow these steps and everything should work fine.  
+
+# Force all HTTP traffic to HTTPS
+# Ensures encrypted communication between client and server
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+# Tells browsers to only use HTTPS for 1 year
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True             # Allow browser preload lists
+
+# Cookies should only be sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Prevent clickjacking by denying iframe embedding
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from MIME-sniffing responses
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+SSL/TLS Certificate:
+ Provider: Let's Encrypt (free) or purchased SSL certificate
+Certificate paths configured in Nginx/Apache
