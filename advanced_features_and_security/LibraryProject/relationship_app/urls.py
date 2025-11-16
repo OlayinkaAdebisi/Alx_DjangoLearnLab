@@ -18,11 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import register
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import list_books, LibraryDetailView
 from . import views
-from .admin_view import admin_view
-from .librarian_view import librarian_view
-from .member_view import member_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('book_list/',views.funct_view, name='book_list'),
@@ -30,9 +26,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
     path("signup/", views.register.as_view(), name="register"),
-    path('admin_view/',admin_view,name='admin_view'),
-    path('librarian_view/',librarian_view,name='librarian_view'),
-    path('member_view/',member_view,name='member_view'),
     path('add_book/',views.add_book,name='add_book'),
     path('edit_book/',views.edit_book,name='edit_book'),
     path('delete_book/',views.delete_book,name='delete_book'),
