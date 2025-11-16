@@ -28,3 +28,4 @@ def delete_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     user.delete()
     return redirect("user_list")
+#book_list
