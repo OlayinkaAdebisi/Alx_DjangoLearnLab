@@ -1,6 +1,11 @@
 # forms.py
 from django import forms
 
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)
+class ExampleForm(forms.Form):
+    # Example field for user input
+    example_field = forms.CharField(
+        max_length=100,
+        required=True,
+        help_text="Enter some text (max 100 characters)"
+    )
+
