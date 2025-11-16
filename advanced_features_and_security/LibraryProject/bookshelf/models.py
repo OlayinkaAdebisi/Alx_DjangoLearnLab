@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager,BaseUserManager
-from django.contrib.auth.models import Permission
 
 # Create your models here.
 class Book(models.Model):
@@ -37,8 +36,9 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 class CustomUser(AbstractUser):
-    date_of_birth = models.DateField()
-    profile_photo = models.ImageField(upload_to='product_images/')
+    date_of_birth = models.DateField(blank=True, null=True)
+    profile_photo = models.ImageField(upload_to='product_images/', blank=True, null=True)
+
     objects = CustomUserManager()
 
 class Post(models.Model):
