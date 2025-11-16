@@ -23,7 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3%(%x)1u89xc)b918remcr%o-y=d5)oqv0(dnthj4aw4#a9@yu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Disable debug mode in production to prevent sensitive info leak
+DEBUG = False
+# Enable browser XSS filter to prevent reflected XSS attacks
+SECURE_BROWSER_XSS_FILTER = True
+# Prevent the site from being loaded in iframes (clickjacking protection)
+X_FRAME_OPTIONS = 'DENY'
+# Prevent MIME type sniffing in browsers
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# Ensure CSRF and session cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = []
 
@@ -49,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -123,3 +134,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+# Allow scripts only from your domain and trusted sources
+# Content Security Policy (CSP) to mitigate XSS attacks
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "https://cdnjs.cloudflare.com")  # example CDN
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
+CSP_IMG_SRC = ("'self'", "data:")
+CSP_CONNECT_SRC = ("'self'",)
+CSP_MEDIA_SRC = ("'self'",)
