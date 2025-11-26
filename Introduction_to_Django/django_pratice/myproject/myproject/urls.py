@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hifuct/', views.hello_world, name = 'funct view'),
     path('office/', views.HelloView.as_view(),name = 'HelloView'),
+    path('temp/', views.book_list_view, name= 'book_list'),
 ]

@@ -11,3 +11,6 @@ class Product(models.Model):
 class Description(models.Model):
     about = models.TextField()
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
+class book_list(models.Model):
+    title = models.CharField(max_length=20)
+    author = models.CharField(max_length=20)

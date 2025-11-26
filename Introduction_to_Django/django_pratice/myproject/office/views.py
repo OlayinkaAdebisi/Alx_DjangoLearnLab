@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView
+from .models import book_list
 """from django.views.generic import TemplateView
 
 class HelloView(TemplateView):
@@ -12,3 +13,6 @@ def hello_world(request):
     return HttpResponse("Hello, function based view!")
 class HelloView(TemplateView):
     template_name = 'hello.html'
+def book_list_view(request):
+    books = book_list.objects.all()  # this fetches all book records
+    return render(request, 'office/book_list.html', {'book_list': books})

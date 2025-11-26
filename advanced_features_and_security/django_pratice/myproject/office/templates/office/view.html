@@ -1,0 +1,44 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Users — list</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 20px; }
+    .user-card { display:flex; gap:16px; align-items:center; border:1px solid #e6e6e6; padding:12px; border-radius:8px; margin-bottom:12px; }
+    .avatar { width:72px; height:72px; object-fit:cover; border-radius:8px; background:#f3f3f3; }
+    .meta { display:flex; flex-direction:column; }
+    .meta .name { font-weight:600; }
+    .meta .dob { color:#666; font-size:0.95rem; }
+    a { color:inherit; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <h1>All users</h1>
+
+  {% if users %}
+    <div>
+      {% for user in users %}
+        <a href="{% url 'user_detail' user.pk %}">
+          <div class="user-card">
+            {% if user.profile_picture %}
+              <img class="avatar" src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s picture">
+            {% else %}
+              <img class="avatar" src="{% static 'office/default-avatar.png' %}" alt="No picture">
+            {% endif %}
+            <div class="meta">
+              <div class="name">{{ user.get_full_name|default:user.username }}</div>
+              <div class="dob">Date of birth: {{ user.date_of_birth|date:"j M, Y" }}</div>
+              <div class="email">{{ user.email }}</div>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No users found.</p>
+  {% endif %}
+</body>
+</html>
