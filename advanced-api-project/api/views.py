@@ -40,8 +40,8 @@ class BookUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     def get_queryset(self):
-        return Book.objects.filter(owner=self.request.user)
+        return Book.objects.all()
 class BookDeleteView(generics.DestroyAPIView):
-    queryset = BookSerializer
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
