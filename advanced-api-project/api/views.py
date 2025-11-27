@@ -4,13 +4,18 @@ from .models import Book
 from .serializers import BookSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework import filters
 # Create your views here.
 # creates DRF views
 class BookListView(generics.ListCreateAPIView):
     queryset= Book.objects.all()
     serializer_class = BookSerializer
     # readonly for not authenticated
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_fields = ['title', 'author', 'publication_year']
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title ']
+
 
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
@@ -22,7 +27,7 @@ class BookCreateView(generics.CreateAPIView):
     serializer_class = BookSerializer
     # provvides user authenitication and give crud
     authentication_classes = [TokenAuthentication] 
-    permission_classes = [IsAuthenticated,IsAdminUser]
+    permission_classes = [IsAuthenticated]
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
