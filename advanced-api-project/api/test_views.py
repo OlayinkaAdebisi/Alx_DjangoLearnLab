@@ -8,6 +8,7 @@ class BookListViewTest(APITestCase):
         self.factory = APIRequestFactory()
         self.user = User.objects.create_user(username='john', password='big1234567')
         self.author = Author.objects.create(name='Test Author')
+        self.client.login(username='john', password='big1234567')
     def test_get_books(self):
         # Create a GET request
         request = self.factory.get('/books/')  # Use the URL path you have
@@ -34,10 +35,7 @@ class BookListViewTest(APITestCase):
             publication_year=2025
         )
         book_id = book.id
-        request = self.factory.put(f'books/update/{book_id}/',{'title':'updated_idea','author': self.author.id,'publication_year':'2025'},format='json')
-        force_authenticate(request, user=self.user)
-        view = BookUpdateView.as_view()
-        response = view(request, pk=book_id)
+        response = self.client.put(f'/books/update/{book_id}/',{'title':'updated_idea','author': self.author.id,'publication_year':'2025'},format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['title'], 'updated_idea')
         print(response.data)
