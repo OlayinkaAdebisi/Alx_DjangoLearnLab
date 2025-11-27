@@ -5,11 +5,10 @@ from .serializers import BookSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import filters
-from django_filters import rest_framework as filters
+from django_filters import rest_framework as filterz
 # Create your views here.
 # creates DRF views
-class ListFilter(filters.FilterSet):
-
+class ListFilter(filterz.FilterSet):
     class Meta:
         model = Book
         fields = ('title', 'author', 'publication_year')
@@ -18,10 +17,11 @@ class BookListView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     # readonly for not authenticated
     #permission_classes = [IsAuthenticatedOrReadOnly]
-    """filterset_fields = []
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title ']"""
     filterset_class =ListFilter
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    ordering_fields = ['title', 'publication_year']
+    search_fields = ['title','author__name']
+    
 
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
