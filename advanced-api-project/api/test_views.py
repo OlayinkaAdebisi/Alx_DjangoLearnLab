@@ -25,7 +25,8 @@ class BookListViewTest(APITestCase):
         view = BookCreateView.as_view()
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
+        self.assertEqual(response.data['title'], 'new_idea')
+        print(response.data)
     def test_update_books(self):
         book = Book.objects.create(
             title='new_idea',
@@ -38,7 +39,8 @@ class BookListViewTest(APITestCase):
         view = BookUpdateView.as_view()
         response = view(request, pk=book_id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
+        self.assertEqual(response.data['title'], 'updated_idea')
+        print(response.data)
     def test_delete_books(self):
         book = Book.objects.create(
         title='new_idea',
