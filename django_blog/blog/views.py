@@ -13,7 +13,7 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email']
 # Create your views here.
 #
-def signup(request):
+def register(request):
     return render(request,'blog/signup.html')
 #@login_required
 def profile(request):
