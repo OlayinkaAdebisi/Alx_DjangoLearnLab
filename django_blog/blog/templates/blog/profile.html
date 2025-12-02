@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-box">
+        <h2>My Profile</h2>
+
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+
+        <a href="{% url 'logout' %}" class="auth-btn">Logout</a>
+    </div>
+</div>
+{% endblock %}
