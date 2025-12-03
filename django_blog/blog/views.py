@@ -23,7 +23,7 @@ def register(request):
             return redirect('login')
     else:
         form = UserRegisterForm()  # Use the custom form here too
-    return render(request, 'blog/signup.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
 @login_required
 def profile(request):
     return render(request, 'blog/profile.html')
