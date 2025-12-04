@@ -66,12 +66,12 @@ def edit_profile(request):
 # View for the blog Post model
 class Postlistview(ListView):
     model = Post
-    template_name = "blog/list_post.html"
+    template_name = "blog/post_list.html"
     context_object_name = 'Post'
 
 class Postdetailview(DetailView):
     model = Post
-    template_name = "blog/detail.html"
+    template_name = "blog/post_detail.html"
     context_object_name = 'Post'
 @login_required
 class PostCreateView (LoginRequiredMixin, CreateView):
@@ -89,7 +89,7 @@ class PostCreateView (LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = updatepost
-    template_name = "blog/update.html"
+    template_name = "blog/post_form.html"
     context_object_name = 'Post'
     success_url = reverse_lazy('list')
 
