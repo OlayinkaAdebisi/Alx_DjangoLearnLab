@@ -73,7 +73,7 @@ class Postdetailview(DetailView):
     model = Post
     template_name = "blog/detail.html"
     context_object_name = 'Post'
-#@login_required
+@login_required
 class PostCreateView (LoginRequiredMixin, CreateView):
     model = Post
     form_class = createpost
