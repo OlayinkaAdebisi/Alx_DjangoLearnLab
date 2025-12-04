@@ -1,0 +1,7 @@
+{% extends "blog/base.html" %}
+<li>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" style="background:none; border:none; color:inherit; cursor:pointer;">Logout</button>
+    </form>
+</li>

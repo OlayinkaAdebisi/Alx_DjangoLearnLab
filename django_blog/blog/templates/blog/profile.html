@@ -13,7 +13,10 @@
         <p><strong>Email:</strong> {{ user.email }}</p>
         
         <a href="{% url 'edit_profile' %}">Edit Profile</a>
-        <a href="{% url 'logout' %}" class="auth-btn">Logout</a>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>       
     </div>
 </div>
 {% endblock %}

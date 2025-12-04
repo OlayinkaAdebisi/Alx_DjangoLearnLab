@@ -1,0 +1,14 @@
+<!-- list_posts.html -->
+{% extends "blog/base.html" %}
+{% block title %}Detail List of a Post{% endblock %}
+{% block content %}
+<h1> Detail View <h1>
+    <p>
+        
+        <strong>Title:</strong>  {{ Post.title }}<br>
+        <strong>Content:</strong>  {{ Post.content }}<br>
+        <strong> Publish Date:</strong> {{ Post.published_date }}<br>
+        <strong>Author:</strong>  {{ Post.author }}
+        
+    </p>
+{% endblock %}

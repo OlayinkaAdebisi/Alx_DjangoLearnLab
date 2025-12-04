@@ -1,0 +1,18 @@
+<!-- list_posts.html -->
+{% extends "blog/base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Posts Available:</h1>
+    <ul>
+        {% for post in Post %}
+        <li>{{ post.title }} by {{ post.author }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}
