@@ -9,7 +9,6 @@ from .models import Post,Comment,Tag
 from django.urls import reverse_lazy,reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from taggit.forms import TagWidget
 from .forms import (
     UserRegisterForm, 
     Update_User, 
@@ -78,10 +77,6 @@ class PostCreateView (LoginRequiredMixin, CreateView):
     context_object_name = 'Post-create'
     success_url = reverse_lazy('list')
 
-    widgets = {
-            'tags': TagWidget(),
-        }
-
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -92,10 +87,6 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = "blog/post_form.html"
     context_object_name = 'Post-update'
     success_url = reverse_lazy('list')
-
-    widgets = {
-            'tags': TagWidget(),
-        }
 
     def test_func(self):
         post = self.get_object()
