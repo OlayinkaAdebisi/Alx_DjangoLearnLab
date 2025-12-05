@@ -1,18 +1,30 @@
-<h3>Comments</h3>
-<ul>
-    {% for comment in Post.comment_post.all %}
-    
+{% extends "blog/base.html" %}
+
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+    <h1>Comments for this Post</h1>
+
+    <ul>
+    {% for comment in Comment_list %}
         <li>
             <p>{{ comment.content }}</p>
-            <small>By: {{ comment.author }}</small>
-
+            <small>
+                By {{ comment.author.username }} 
+                on {{ comment.created_at|date:"M d, Y" }}
+            </small>
+            
             {% if user == comment.author %}
                 <a href="{% url 'comment_update' pk=comment.pk %}">Edit</a>
                 <a href="{% url 'comment_delete' pk=comment.pk %}">Delete</a>
             {% endif %}
         </li>
-        
     {% empty %}
-        <li>No comments yet.</li>
+        <li>No comments found for this post.</li>
     {% endfor %}
-</ul>
+    </ul>
+
+    <a href="{% url 'comment_update' pk=view.kwargs.pk %}" class="btn-style">Back to Post</a>
+    <a href="{% url 'new_comment' pk=view.kwargs.pk %}" class="btn-style">Add Comment</a>
+
+{% endblock %}

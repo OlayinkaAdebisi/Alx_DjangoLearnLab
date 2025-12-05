@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from .models import Post,Comment
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # add more files to the usercreationform
@@ -117,10 +117,13 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         context['comments'] = Comment.objects.filter(post=self.object)
         return context
         
-class CommentList(ListView):
+class CommentCreateView(ListView):
     model = Comment
     template_name = "blog/comment_list.html"
     context_object_name = 'Comment_list'
+
+    def get_queryset(self):
+        return Comment.objects.filter(post_id=self.kwargs['pk'])
 class CommentCreate(LoginRequiredMixin,CreateView):
     model = Comment
     form_class = commentForm
@@ -136,17 +139,33 @@ class CommentCreate(LoginRequiredMixin,CreateView):
         return reverse_lazy('Comment_list', kwargs={'pk': self.kwargs['pk']})
 
 
-class CommentUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     form_class = commentForm
-    template_name = "blog/comment_list.html"
+    template_name = "blog/comment_create.html"
     success_url = reverse_lazy('Comment_list')
+    context_object_name = 'comment_update'
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True 
+        return False
 
         
         
-class CommentDelete(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Comment
-    template_name = ""
-        #success_url = reverse_lazy('')
+    template_name = "blog/delete.html"
+    
+    
+    def get_success_url(self):
+        post_id = self.object.post.pk
+        return reverse('Comment_list', kwargs={'pk': post_id})
+    
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True 
+        return False
 
        
