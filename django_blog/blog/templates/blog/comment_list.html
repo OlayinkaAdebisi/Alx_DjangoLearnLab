@@ -1,0 +1,18 @@
+<h3>Comments</h3>
+<ul>
+    {% for comment in Post.comment_post.all %}
+    
+        <li>
+            <p>{{ comment.content }}</p>
+            <small>By: {{ comment.author }}</small>
+
+            {% if user == comment.author %}
+                <a href="{% url 'comment_update' pk=comment.pk %}">Edit</a>
+                <a href="{% url 'comment_delete' pk=comment.pk %}">Delete</a>
+            {% endif %}
+        </li>
+        
+    {% empty %}
+        <li>No comments yet.</li>
+    {% endfor %}
+</ul>

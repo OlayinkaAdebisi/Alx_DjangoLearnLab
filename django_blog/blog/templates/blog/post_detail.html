@@ -11,4 +11,7 @@
         <strong>Author:</strong>  {{ Post.author }}
         
     </p>
+    <a href="{% url 'Comment_list' pk=view.kwargs.pk %}" class="btn-style">View Comment</a><br>
+    <a href="{% url 'new_comment' pk=view.kwargs.pk %}" class="btn-style">Comment </a>
+    
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+
+{% block title%}Comment{% endblock %}
+{% block content %}
+
+<h1>New comment</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit"> Comment </button>
+</form>
+<a href="{% url 'detail_list' pk=view.kwargs.pk %}"class="btn-style">Cancel</a>
+{% endblock %}
