@@ -13,7 +13,7 @@ from .forms import (
     Update_User, 
     createpost, 
     updatepost, 
-    commentForm
+    CommentForm
 )
 
 # Create your views here.
@@ -103,7 +103,7 @@ class CommentCreateView(ListView):
         return Comment.objects.filter(post_id=self.kwargs['pk'])
 class CommentCreate(LoginRequiredMixin,CreateView):
     model = Comment
-    form_class = commentForm
+    form_class = CommentForm
     template_name = "blog/comment_create.html"
         
 
@@ -118,7 +118,7 @@ class CommentCreate(LoginRequiredMixin,CreateView):
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
-    form_class = commentForm
+    form_class = CommentForm
     template_name = "blog/comment_create.html"
     success_url = reverse_lazy('Comment_list')
     context_object_name = 'comment_update'
