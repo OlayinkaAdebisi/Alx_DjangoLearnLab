@@ -9,6 +9,14 @@
         <strong>Content:</strong>  {{ Post.content }}<br>
         <strong> Publish Date:</strong> {{ Post.published_date }}<br>
         <strong>Author:</strong>  {{ Post.author }}
+
+        {% for tag in Post.tags.all %}
+        <span style="background-color: #e4e6ea; color: white; padding: 3px 8px; border-radius: 4px; margin-right: 5px;">
+            {{ tag.name }}
+        </span>
+        {% empty %}
+        <span style="color: #888;">No tags added.</span>
+        {% endfor %}
         
     </p>
     <a href="{% url 'Comment_list' pk=view.kwargs.pk %}" class="btn-style">View Comment</a><br>

@@ -21,15 +21,15 @@ class Update_User(forms.ModelForm):
 class createpost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title','content']
+        fields = ['title','content','tags']
 # retrieve and allows user edit existing form
 class updatepost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title','content']
+        fields = ['title','content','tags']
 
 # form for the comment model
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['post','content']
+        fields = ['content']

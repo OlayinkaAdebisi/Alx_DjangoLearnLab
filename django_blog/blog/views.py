@@ -5,9 +5,10 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
-from .models import Post,Comment
+from .models import Post,Comment,Tag
 from django.urls import reverse_lazy,reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from .forms import (
     UserRegisterForm, 
     Update_User, 
@@ -51,6 +52,19 @@ class Postlistview(ListView):
     model = Post
     template_name = "blog/post_list.html"
     context_object_name = 'Post'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')
+        
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | 
+                Q(content__icontains=query) |
+                Q(tags__name__icontains=query)
+            ).distinct()
+            
+        return queryset
 
 class Postdetailview(DetailView):
     model = Post
@@ -144,5 +158,12 @@ class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         if self.request.user == post.author:
             return True 
         return False
+class tagview(ListView):
+    model = Post
+    template_name = "blog/tags.html"
+    context_object_name = "tag_list"
 
+    def get_queryset(self):
+        tag_name = self.kwargs.get('tag_name')
+        return Post.objects.filter(tags__name__iexact=tag_name)
        

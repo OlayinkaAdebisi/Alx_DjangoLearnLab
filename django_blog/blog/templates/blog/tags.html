@@ -1,0 +1,17 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Posts with {{view.kwargs.tag_name}} :</h1>
+    <ul>
+        {% for tag in tag_list %}
+            <li>{{ tag.title }} by {{ tag.author }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}
