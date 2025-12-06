@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView,LogoutView
 from . import views
-from .views import Postlistview,PostCreateView,PostUpdateView,tagview, CommentUpdateView,CommentDeleteView,PostDeleteView,Postdetailview,CommentCreate,CommentCreateView
+from .views import Postlistview,PostCreateView,PostUpdateView,PostByTagListView, CommentUpdateView,CommentDeleteView,PostDeleteView,Postdetailview,CommentCreate,CommentCreateView
 #from .views import register
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='blog/login.html'), name='login'),
@@ -19,5 +19,5 @@ urlpatterns = [
     path('post/<int:pk>/comments/new/',CommentCreate.as_view(),name='new_comment'),
     path('comment/<int:pk>/update/',CommentUpdateView.as_view(),name='comment_update'),
     path('comment/<int:pk>/delete/',CommentDeleteView.as_view(),name='comment_delete'),
-    path('tags/<str:tag_name>/',tagview.as_view(),name='tag_list')
+    path('tags/<slug:tag_slug>/',PostByTagListView.as_view(),name='tag_list')
 ]

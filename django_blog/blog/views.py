@@ -158,12 +158,11 @@ class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         if self.request.user == post.author:
             return True 
         return False
-class tagview(ListView):
+class PostByTagListView(ListView):
     model = Post
     template_name = "blog/tags.html"
     context_object_name = "tag_list"
 
     def get_queryset(self):
-        tag_name = self.kwargs.get('tag_name')
-        return Post.objects.filter(tags__name__iexact=tag_name)
-       
+        tag_slug = self.kwargs.get('tag_slug')
+        return Post.objects.filter(tags__slug__iexact=tag_slug)
