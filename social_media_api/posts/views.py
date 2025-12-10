@@ -5,7 +5,7 @@ from .serializers import PostSerializer,CommentSerializer
 from rest_framework import filters
 from django_filters import rest_framework as filterz
 from django.contrib.auth import get_user_model
-from django.db.models import Q
+
 # Create your views here.
 
 User=get_user_model
@@ -37,5 +37,5 @@ class PostFeed(generics.ListAPIView):
         following_user=self.request.following.all()
 
         return Post.objects.filter(
-            Q(author__in=following_user)
+            author__in=following_user
         ).order_by('-created_at')
