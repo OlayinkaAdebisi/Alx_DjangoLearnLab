@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from .models import Post,Comment
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions,status,generics
 from .serializers import PostSerializer,CommentSerializer
 from rest_framework import filters
 from django_filters import rest_framework as filterz
+from django.contrib.auth import get_user_model
+from django.db.models import Q
 # Create your views here.
+
+User=get_user_model
 class ListFilter(filterz.FilterSet):
     class Meta:
         model = Post
@@ -23,3 +27,15 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset=Comment.objects.all()
     serializer_class=CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class PostFeed(generics.ListAPIView):
+    queryset=Post.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        following_user=self.request.following.all()
+
+        return Post.objects.filter(
+            Q(author__in=following_user)
+        ).order_by('-created_at')
