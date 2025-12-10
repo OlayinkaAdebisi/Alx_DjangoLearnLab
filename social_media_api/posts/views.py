@@ -34,8 +34,8 @@ class PostFeed(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        following_user=self.request.following.all()
+        following_users=self.request.following.all()
 
         return Post.objects.filter(
-            author__in=following_user
-        ).order_by('-created_at')
+            author__in=following_users
+            ).order_by('-created_at')
