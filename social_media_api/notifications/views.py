@@ -1,14 +1,16 @@
-from django.shortcuts import render
-"""from .models import Notification
-from posts.models import po
-from rest_framework import viewsets, permissions, status, generics
-# Create your views here.
-class liking(viewsets.ModelViewSet):
-    queryset=Notification.objects.all()
-    permission_classes=[permissions.IsAuthenticated]
+from rest_framework import generics, permissions
+from .models import Notification
+from .serializers import NotificationSerializer
 
-    def like(self,request):
-        post=self.get_object()"""
+class NotificationListView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Notification.objects.filter(recipient=user)
+
+
 
 
 

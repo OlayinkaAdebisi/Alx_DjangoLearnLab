@@ -7,8 +7,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-
-
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
+from posts.models import Post
 class RegisterView(generics.GenericAPIView):
     serializer_class=RegisterSerializer
     permission_classes = [AllowAny]
@@ -44,10 +45,20 @@ class FollowUserView(generics.GenericAPIView):
             )
         else:
             request.user.following.add(user_to_follow)
+            Notification.objects.create(
+                recipient=user_to_follow,
+                actor=request.user,
+                verb='followed you',
+                content_type=ContentType.objects.get_for_model(CustomUser),
+                object_id=user_to_follow.id
+            )
             return Response(
                 {"message": f"You are now following {user_to_follow.username}"},
                 status=status.HTTP_200_OK
             )
+    
+    
+        
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = CustomUser.objects.all()

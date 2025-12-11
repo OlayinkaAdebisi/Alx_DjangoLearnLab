@@ -10,7 +10,7 @@ from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 # Create your views here.
 
-User=get_user_model
+User=get_user_model()
 class ListFilter(filterz.FilterSet):
     class Meta:
         model = Post
@@ -30,13 +30,26 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class=CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        comment=serializer.save(user=self.request.user)
+        post = comment.post
+        
+        if post.author!=None:
+            Notification.objects.create(
+            recipient=Comment.user,
+            actor=self.request.user,
+            verb='commented on your post',
+            content_type=ContentType.objects.get_for_model(Comment),
+            object_id=comment.id,
+        )
+        
 class PostFeed(generics.ListAPIView):
     queryset=Post.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user
-        following_users=self.request.following.all()
+        following_users=user.following.all()
 
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
 class LikeView(generics.GenericAPIView):
@@ -70,7 +83,7 @@ class UnlikeView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def post(self,request,pk):
         user=self.request.all()
-        post=generics.get_object_or_404()
+        post=generics.get_object_or_404(Post, pk=pk)
         try:
             like=Like.objects.get(user=request.user,post=post)
             like.delete()
@@ -83,6 +96,7 @@ class UnlikeView(generics.GenericAPIView):
                         {"message": "You havent liked this post"},
                              status=status.HTTP_400_BAD_REQUEST
                             )
+
 """posts/views.py doesn't contain: 
 ["generics.get_object_or_404(Post, pk=pk)",
  "Like.objects.get_or_create(user=request.user, post=post)",
