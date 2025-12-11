@@ -10,7 +10,7 @@ class Notification(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     target = GenericForeignKey('content_type', 'object_id')
-    timestamp=models.DateTimeField()
+    timestamp=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.actor} {self.verb} {self.target}"
