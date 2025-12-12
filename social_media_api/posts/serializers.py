@@ -4,17 +4,17 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model
 class PostSerializer(serializers.ModelSerializer):
-    author_name=serializers.ReadOnlyField(source='author.username')
+    author=serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Post
-        fields = ['id','author','author_name','title','content','created_at','updated_at']
+        fields = ['id','author','title','content','created_at','updated_at']
 
-        read_only_fields=['author_name']
+        read_only_fields=['author']
 
 class CommentSerializer(serializers.ModelSerializer):
-    user_name=serializers.ReadOnlyField(source='user.username')
+    author = serializers.ReadOnlyField(source='author.username')
+
     class Meta:
         model = Comment
-        fields = "__all__"
-
-        read_only_fields=['user_name']
+        fields = ['id', 'author', 'post', 'content', 'created_at', 'updated_at']
+        read_only_fields = ['author', 'created_at', 'updated_at']

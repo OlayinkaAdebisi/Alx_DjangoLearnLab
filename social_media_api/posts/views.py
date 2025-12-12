@@ -24,6 +24,8 @@ class PostViewSet(viewsets.ModelViewSet):
     filterset_class =ListFilter
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['title', 'content']
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset=Comment.objects.all()
@@ -31,19 +33,20 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
         comment=serializer.save(user=self.request.user)
         post = comment.post
         
         if post.author!=None:
             Notification.objects.create(
-            recipient=Comment.user,
+            recipient=post.author,
             actor=self.request.user,
             verb='commented on your post',
             content_type=ContentType.objects.get_for_model(Comment),
             object_id=comment.id,
         )
         
-class PostFeed(generics.ListAPIView):
+class PostFeed(viewsets.ReadOnlyModelViewSet):
     queryset=Post.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -82,7 +85,7 @@ class LikeView(generics.GenericAPIView):
 class UnlikeView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def post(self,request,pk):
-        user=self.request.all()
+        #user=self.request.all()
         post=generics.get_object_or_404(Post, pk=pk)
         try:
             like=Like.objects.get(user=request.user,post=post)

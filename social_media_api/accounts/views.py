@@ -55,9 +55,7 @@ class FollowUserView(generics.GenericAPIView):
             return Response(
                 {"message": f"You are now following {user_to_follow.username}"},
                 status=status.HTTP_200_OK
-            )
-    
-    
+            )  
         
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
