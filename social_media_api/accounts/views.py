@@ -10,6 +10,8 @@ from rest_framework.authtoken.models import Token
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 from posts.models import Post
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
 class RegisterView(generics.GenericAPIView):
     serializer_class=RegisterSerializer
     permission_classes = [AllowAny]
@@ -75,3 +77,12 @@ class UnfollowUserView(generics.GenericAPIView):
                 {"message": f"You have now unfollowed {user_to_unfollow.username}"},
                 status=status.HTTP_200_OK
             )
+        
+def create_admin_superuser(request):
+    User = get_user_model()
+    # Check if admin already exists so we don't crash
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@example.com', 'password123')
+        return HttpResponse("SUCCESS! Superuser 'admin' created. Password is: password123")
+    else:
+        return HttpResponse("Superuser 'admin' already exists.")
